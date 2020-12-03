@@ -17,40 +17,41 @@ def resource_path(relative_path):
     base_path = getattr(sys, '_MEIPASS', os.path.dirname(os.path.abspath(__file__)))
     return os.path.join(base_path, relative_path)
 
-FORM_CLASS,_=loadUiType(resource_path("main.ui"))
+FORM_CLASS,_ = loadUiType(resource_path("main.ui"))
 
 # Globals for tracking current row for Edit Inventory tab
-x = 0
-idx = 0
+id_row = 0
+curr_id = 0
 
 class Main(QMainWindow, FORM_CLASS):
     def __init__(self, parent=None):
         super(Main, self).__init__(parent)
+        self.setFixedWidth(560)
+        self.setFixedHeight(928)
         self.setupUi(self)
         self.Handle_Buttons()
     
     def Handle_Buttons(self):
         # All Pages
-        self.refresh_btn.clicked.connect(self.GET_DATA)
+        self.refresh_btn.clicked.connect(self.load_data)
 
         # Details Page
-        self.search_btn.clicked.connect(self.SEARCH)
+        self.search_btn.clicked.connect(self.search)
 
         # Statistics Page
-        self.check_btn.clicked.connect(self.LEVEL)
-        self.check_btn_2.clicked.connect(self.LEVEL2)
+        self.check_btn.clicked.connect(self.highest_3)
+        self.check_btn_2.clicked.connect(self.lowest_3)
 
         # Edit Page
-        self.update_btn.clicked.connect(self.UPDATE)
-        self.delete_btn.clicked.connect(self.DELETE)
-        self.add_btn.clicked.connect(self.ADD)
-        self.next_btn.clicked.connect(self.NEXT)
-        self.previous_btn.clicked.connect(self.PREVIOUS)
-        self.last_btn.clicked.connect(self.LAST)
-        self.first_btn.clicked.connect(self.FIRST)
+        self.update_btn.clicked.connect(self.update)
+        self.delete_btn.clicked.connect(self.delete)
+        self.add_btn.clicked.connect(self.add)
+        self.next_btn.clicked.connect(self.next)
+        self.previous_btn.clicked.connect(self.previous)
+        self.last_btn.clicked.connect(self.last)
+        self.first_btn.clicked.connect(self.first)
 
-    
-    def GET_DATA(self):
+    def load_data(self):
         # Connect to SQlite database and fill GUI table with data
         db = sqlite3.connect(resource_path("paint.db"))
         cursor = db.cursor()
@@ -78,16 +79,16 @@ class Main(QMainWindow, FORM_CLASS):
         self.lbl_gallons_nbr.setText(str(result_gallons_nbr.fetchone()[0]))
 
         # Initialize Edit Inventor page info
-        self.FIRST()
-        self.NAVIGATE()
+        self.first()
+        self.load_edit_inventory()
 
 
-    def SEARCH(self):
+    def search(self):
         db = sqlite3.connect("paint.db")
         cursor = db.cursor()
 
         nbr = int(self.count_filter_txt.text())
-        command = ''' SELECT * from paint_table WHERE Gallons<=?'''
+        command = ''' SELECT * from paint_table WHERE Gallons <= ? '''
         result = cursor.execute(command, [nbr])
         self.table.setRowCount(0)
         
@@ -97,7 +98,7 @@ class Main(QMainWindow, FORM_CLASS):
                 self.table.setItem(row_number, column_number, QTableWidgetItem(str(data)))
 
     # Display Highest 3 volume paints
-    def LEVEL(self):
+    def highest_3(self):
         db = sqlite3.connect("paint.db")
         cursor = db.cursor()
 
@@ -110,9 +111,8 @@ class Main(QMainWindow, FORM_CLASS):
             for column_number, data in enumerate(row_data):
                 self.table2.setItem(row_number, column_number, QTableWidgetItem(str(data)))
         
-        
     # Display lowest 3 volume paints    
-    def LEVEL2(self):
+    def lowest_3(self):
         db = sqlite3.connect("paint.db")
         cursor = db.cursor()
 
@@ -125,131 +125,126 @@ class Main(QMainWindow, FORM_CLASS):
             for column_number, data in enumerate(row_data):
                 self.table3.setItem(row_number, column_number, QTableWidgetItem(str(data)))
 
-
-
-    def NAVIGATE(self):
-        global idx
+    def load_edit_inventory(self):
+        global curr_id 
         db = sqlite3.connect("paint.db")
         cursor = db.cursor()
 
         command = ''' SELECT * from paint_table WHERE ID = ? '''
+        result = cursor.execute(command, [curr_id])
+        row = result.fetchone()
 
-        result = cursor.execute(command, [idx])
-        val = result.fetchone()
+        self.id.setText(str(row[0]))
+        self.paint_name.setText(str(row[1]))
+        self.sheen.setText(str(row[2]))
+        self.location.setText(str(row[3]))
+        self.gallons.setValue(row[4])
 
-        self.id.setText(str(val[0]))
-        self.paint_name.setText(str(val[1]))
-        self.sheen.setText(str(val[2]))
-        self.location.setText(str(val[3]))
-        self.gallons.setValue(val[4])
-
-    def NEXT(self):
+    def next(self):
         db = sqlite3.connect("paint.db")
         cursor = db.cursor()
         command = ''' SELECT ID FROM paint_table '''
         result = cursor.execute(command)
-        val = result.fetchall()
+        id_list = result.fetchall()
         
-        tot = len(val)
-        global x
-        global idx
-        x = x + 1
+        global id_row 
+        global curr_id
+        id_list_len = len(id_list)
+        id_row = id_row + 1
 
-        if x < tot:
-            idx = val[x][0]
-            self.NAVIGATE()
+        if id_row < id_list_len:
+            curr_id = id_list[id_row][0]
+            self.load_edit_inventory()
         else:
-            x = tot - 1
+            id_row = id_list_len - 1
     
-    def PREVIOUS(self):
+    def previous(self):
         db = sqlite3.connect("paint.db")
         cursor = db.cursor()
         command = ''' SELECT ID FROM paint_table '''
         result = cursor.execute(command)
-        val = result.fetchall()
+        id_list = result.fetchall()
         
-        tot = len(val)
-        global x
-        global idx
-        x = x - 1
+        global id_row
+        global curr_id
+        id_row = id_row - 1
 
-        if x > -1:
-            idx = val[x][0]
-            self.NAVIGATE()
+        if id_row > -1:
+            curr_id = id_list[id_row][0]
+            self.load_edit_inventory()
         else:
-            x = 0
+            id_row = 0
     
-    def LAST(self):
+    def first(self):
         db = sqlite3.connect("paint.db")
         cursor = db.cursor()
         command = ''' SELECT ID FROM paint_table '''
         result = cursor.execute(command)
-        val = result.fetchall()
+        id_list = result.fetchall()
         
-        tot = len(val)
-        global x
-        global idx
-        x = tot - 1
+        global id_row
+        global curr_id
+        id_row = 0
 
-        if x < tot:
-            idx = val[x][0]
-            self.NAVIGATE()
+        if id_row > - 1:
+            curr_id = id_list[id_row][0]
+            self.load_edit_inventory()
         else:
-            x = tot - 1
+            id_row = 0
     
-    def FIRST(self):
+    def last(self):
         db = sqlite3.connect("paint.db")
         cursor = db.cursor()
         command = ''' SELECT ID FROM paint_table '''
         result = cursor.execute(command)
-        val = result.fetchall()
         
-        tot = len(val)
-        global x
-        global idx
-        x = 0
+        global id_row
+        global curr_id
+        id_list = result.fetchall()
+        id_list_len = len(id_list)
+        id_row = id_list_len - 1
 
-        if x > -1:
-            idx = val[x][0]
-            self.NAVIGATE()
+        if id_row < id_list_len:
+            curr_id = id_list[id_row][0]
+            self.load_edit_inventory()
         else:
-            x = 0
+            id_row = id_list_len - 1
 
-    def UPDATE(self):
+    def update(self):
         db = sqlite3.connect("paint.db")
-        cursor=db.cursor()
+        cursor = db.cursor()
         
         id_= int(self.id.text())
-        paint_name_ = self.name.text()
+        paint_name_ = self.paint_name.text()
         sheen_ = self.sheen.text()
         location_ = self.location.text()
         gallons_= str(self.gallons.value())
         
         row = (paint_name_,sheen_,location_,gallons_,id_)
-        command = ''' UPDATE paint_table SET Name=?,Sheen=?,Location=?,Gallons=?, WHERE ID=?'''  
+        command = ''' UPDATE paint_table SET Name=?,Sheen=?,Location=?,Gallons=? WHERE ID = ? '''  
         cursor.execute(command,row)
         db.commit()
     
-    def DELETE(self):
+    def delete(self):
         db = sqlite3.connect("paint.db")
         cursor = db.cursor()
 
         d = self.id.text()
-        command = ''' DELETE FROM paint_table WHERE ID=? '''
-        cursor.execute(command, d)
+        command = ''' DELETE FROM paint_table WHERE ID = ? '''
+        cursor.execute(command, [d]) 
         db.commit()
 
-    def ADD(self):
+    def add(self):
         db = sqlite3.connect("paint.db")
         cursor = db.cursor()
 
-        paint_name_ = self.paint_name.text()
+        paint_name_ = self.paint_name.text() 
         sheen_ = self.sheen.text()
         location_ = self.location.text()
         gallons_ = str(self.gallons.value())
         
         row = (paint_name_,sheen_,location_,gallons_)
-        command = ''' INSERT INTO paint_table (Name,Sheen,Location,Gallons) VALUES (?, ?, ?, ?)''' 
+        command = ''' INSERT INTO paint_table (Name,Sheen,Location,Gallons) VALUES (?, ?, ?, ?)  ''' 
         cursor.execute(command,row)
         db.commit()
 
