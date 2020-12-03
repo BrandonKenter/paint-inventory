@@ -23,6 +23,7 @@ FORM_CLASS,_ = loadUiType(resource_path("main.ui"))
 id_row = 0
 curr_id = 0
 
+
 class Main(QMainWindow, FORM_CLASS):
     def __init__(self, parent=None):
         super(Main, self).__init__(parent)
@@ -81,7 +82,6 @@ class Main(QMainWindow, FORM_CLASS):
         # Initialize Edit Inventor page info
         self.first()
         self.load_edit_inventory()
-
 
     def search(self):
         db = sqlite3.connect("paint.db")
