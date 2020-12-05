@@ -19,4 +19,4 @@ Edit Inventory Tab:
 - Click 'Delete' to delete an entry
 
 
-![alt text](https://github.com/BrandonKenter/Paint-Inventory/blob/master/p1.png?raw=true)
+![alt text](https://i.imgur.com/k1Eq8ve.png)
