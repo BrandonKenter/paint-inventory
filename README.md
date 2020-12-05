@@ -5,6 +5,9 @@ When I worked as a sprayer at an interior millwork company, one of the biggest t
 To run the application, start by downloading PaintManager.rar. Extract the files and open the PaintManager folder. Then launch PaintManager.exe. 
 
 # Using the App
+General details:
+- The data for each paint is stored in an embedded database using SQLite. 
+- Starting data is pre-loaded into the database
 Inventory Details Tab:
 - Click 'Refresh' to load the database with the inventory of paints
 - Click 'Search' to search for paints under a certain gallon amount
