@@ -19,4 +19,4 @@ Edit Inventory Tab:
 - Click 'Delete' to delete an entry
 
 
-![alt text](https://i.imgur.com/k1Eq8ve.png)
+![alt text](https://i.gyazo.com/c5c76121acebc454c417d6b3c81bcd8e.png)
