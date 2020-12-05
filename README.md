@@ -23,4 +23,4 @@ Edit Inventory Tab:
 - Click 'Delete' to delete an entry
 
 # Preview
-![alt text](https://i.gyazo.com/c5c76121acebc454c417d6b3c81bcd8e.png)
+![alt text](https://i.gyazo.com/f3e2e4d57398eb4b5df7cefccf173a02.png)
