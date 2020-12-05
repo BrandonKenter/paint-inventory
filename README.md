@@ -18,5 +18,5 @@ Edit Inventory Tab:
 - Edit the fields and click 'Add' to add a new entry
 - Click 'Delete' to delete an entry
 
-
+# Preview
 ![alt text](https://i.gyazo.com/c5c76121acebc454c417d6b3c81bcd8e.png)
