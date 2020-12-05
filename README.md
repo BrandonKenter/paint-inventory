@@ -17,3 +17,6 @@ Edit Inventory Tab:
 - Edit the fields and click 'Update' to update an existing entry
 - Edit the fields and click 'Add' to add a new entry
 - Click 'Delete' to delete an entry
+
+
+![alt text](https://github.com/BrandonKenter/Paint-Inventory/blob/master/p1.png?raw=true)
