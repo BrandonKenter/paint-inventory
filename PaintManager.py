@@ -79,7 +79,7 @@ class Main(QMainWindow, FORM_CLASS):
         self.lbl_paint_nbr.setText(str(result_paint_nbr.fetchone()[0]))
         self.lbl_gallons_nbr.setText(str(result_gallons_nbr.fetchone()[0]))
 
-        # Initialize Edit Inventor page info
+        # Initialize Edit Inventory page info
         self.first()
         self.load_edit_inventory()
 
