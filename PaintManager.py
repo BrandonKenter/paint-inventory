@@ -30,9 +30,9 @@ class Main(QMainWindow, FORM_CLASS):
         self.setFixedWidth(560)
         self.setFixedHeight(928)
         self.setupUi(self)
-        self.Handle_Buttons()
+        self.handle_buttons()
     
-    def Handle_Buttons(self):
+    def handle_buttons(self):
         # All Pages
         self.refresh_btn.clicked.connect(self.load_data)
 
