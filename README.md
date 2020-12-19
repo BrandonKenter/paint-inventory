@@ -24,3 +24,5 @@ Edit Inventory Tab:
 
 # Preview
 ![alt text](https://i.gyazo.com/f3e2e4d57398eb4b5df7cefccf173a02.png)
+
+![alt text](https://i.gyazo.com/077128e306acd13a5a673ba1ff95091f.png) ![alt text](https://i.gyazo.com/e3d3ff9fe20c9c46ebec3bb2ca6fbe87.png) ![alt text](https://i.gyazo.com/f894eb71ade354829fe2198814c4f7bd.png) 
