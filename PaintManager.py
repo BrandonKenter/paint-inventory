@@ -23,7 +23,6 @@ FORM_CLASS,_ = loadUiType(resource_path("main.ui"))
 id_row = 0
 curr_id = 0
 
-
 class Main(QMainWindow, FORM_CLASS):
     def __init__(self, parent=None):
         super(Main, self).__init__(parent)
