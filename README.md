@@ -21,6 +21,3 @@ Edit Inventory Tab:
 - Edit the fields and click 'Update' to update an existing entry
 - Edit the fields and click 'Add' to add a new entry
 - Click 'Delete' to delete an entry
-
-# Preview
-![alt text](https://rb.gy/usrend) ![alt text](https://rb.gy/avr7dk) ![alt text](https://rb.gy/z7j0j0) 
